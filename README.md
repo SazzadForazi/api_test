@@ -32,7 +32,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ## 🌐 Server Pages
 
 ### Live Production Deployment
-* **Live Sandbox Dashboard**: [https://api-test-git-main-team-forazi.vercel.app/](https://api-test-git-main-team-forazi.vercel.app/)
+* **Live Sandbox Dashboard**: [https://api-test-nine-omega.vercel.app/](https://api-test-nine-omega.vercel.app/)
 * **Live Swagger UI Documentation**: [https://api-test-git-main-team-forazi.vercel.app/docs](https://api-test-git-main-team-forazi.vercel.app/docs)
 * **Live ReDoc Documentation**: [https://api-test-git-main-team-forazi.vercel.app/redoc](https://api-test-git-main-team-forazi.vercel.app/redoc)
 
