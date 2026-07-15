@@ -7,22 +7,32 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #080710;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(255, 255, 255, 0.07);
-            --primary-glow: rgba(124, 58, 237, 0.5); /* Violet */
-            --secondary-glow: rgba(6, 182, 212, 0.5); /* Cyan */
+            --bg-main: #0a0915;
+            --bg-sidebar: #100f24;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --bg-card-hover: rgba(255, 255, 255, 0.06);
+            --border-color: rgba(255, 255, 255, 0.07);
+            
+            --primary: #8b5cf6; /* Violet */
+            --primary-glow: rgba(139, 92, 246, 0.15);
+            --secondary: #06b6d4; /* Cyan */
+            --secondary-glow: rgba(6, 182, 212, 0.15);
+            
+            --emerald: #10b981;
+            --emerald-glow: rgba(16, 185, 129, 0.15);
+            --rose: #f43f5e;
+            --rose-glow: rgba(244, 63, 94, 0.15);
+            --amber: #f59e0b;
+            --amber-glow: rgba(245, 158, 11, 0.15);
+            
             --text-primary: #f3f4f6;
             --text-secondary: #9ca3af;
-            --accent-violet: #8b5cf6;
-            --accent-cyan: #06b6d4;
-            --accent-emerald: #10b981;
-            --accent-rose: #f43f5e;
-            --accent-amber: #f59e0b;
+            --text-muted: #6b7280;
+            --code-color: #34d399;
         }
 
         * {
@@ -33,160 +43,248 @@
 
         body {
             font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-color);
+            background-color: var(--bg-main);
             color: var(--text-primary);
-            overflow-x: hidden;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            position: relative;
+            overflow-x: hidden;
         }
 
         /* Ambient backgrounds */
-        .ambient-orb-1 {
+        .ambient-orb {
             position: absolute;
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.4;
+            pointer-events: none;
+            filter: blur(100px);
+        }
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, rgba(0,0,0,0) 70%);
+            top: -100px;
+            left: 20%;
+        }
+        .orb-2 {
             width: 500px;
             height: 500px;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--primary-glow) 0%, rgba(0,0,0,0) 70%);
-            top: -200px;
-            left: -100px;
-            z-index: -1;
-            opacity: 0.6;
-            pointer-events: none;
-            animation: float-slow 15s infinite alternate;
-        }
-
-        .ambient-orb-2 {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
             background: radial-gradient(circle, var(--secondary-glow) 0%, rgba(0,0,0,0) 70%);
-            bottom: -200px;
-            right: -100px;
-            z-index: -1;
-            opacity: 0.5;
-            pointer-events: none;
-            animation: float-slow-reverse 20s infinite alternate;
+            bottom: -150px;
+            right: 15%;
         }
 
-        @keyframes float-slow {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(50px, 30px) scale(1.1); }
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
-        @keyframes float-slow-reverse {
-            0% { transform: translate(0, 0) scale(1.1); }
-            100% { transform: translate(-60px, -40px) scale(0.9); }
-        }
-
-        /* Container & Grid layout */
-        .container {
-            width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-            flex-grow: 1;
-        }
-
-        /* Header design */
-        header {
+        /* Layout Structure */
+        .app-container {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid var(--card-border);
-            margin-bottom: 2.5rem;
+            width: 100vw;
+            min-height: 100vh;
         }
 
-        .logo-area {
+        /* Sidebar styling */
+        .sidebar {
+            width: 280px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
+            padding: 1.5rem;
+            flex-shrink: 0;
+            z-index: 10;
         }
 
-        .logo-area h1 {
-            font-size: 2.5rem;
+        .brand {
+            margin-bottom: 2rem;
+        }
+
+        .brand h1 {
+            font-size: 1.6rem;
             font-weight: 800;
             background: linear-gradient(135deg, #a78bfa 0%, #22d3ee 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -0.05em;
+            letter-spacing: -0.03em;
         }
 
-        .logo-area p {
+        .brand p {
+            font-size: 0.8rem;
             color: var(--text-secondary);
-            font-size: 1rem;
-            margin-top: 0.25rem;
+            margin-top: 0.2rem;
         }
 
-        .header-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.95rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent-violet) 0%, #7c3aed 100%);
-            color: white;
-            border: none;
-            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
-        }
-
-        .btn-primary:hover {
-            box-shadow: 0 6px 24px rgba(124, 58, 237, 0.5);
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            color: var(--text-primary);
-            backdrop-filter: blur(10px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            backdrop-filter: blur(12px);
+        .nav-menu {
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
-            position: relative;
-            overflow: hidden;
-            transition: border-color 0.3s ease;
+            flex-grow: 1;
         }
 
-        .stat-card:hover {
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 1rem;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            background: transparent;
+            text-align: left;
+        }
+
+        .nav-item:hover {
+            color: var(--text-primary);
+            background-color: var(--bg-card-hover);
+        }
+
+        .nav-item.active {
+            color: var(--text-primary);
+            background-color: var(--primary-glow);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .nav-item svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Active profile status card in sidebar */
+        .user-status-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--secondary);
+            margin-top: 0.1rem;
+        }
+
+        /* Main workspace content area */
+        .workspace {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 2rem;
+            max-width: calc(100vw - 280px - 450px);
+        }
+
+        /* Stats Overview Header */
+        .workspace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .workspace-title h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .quick-links {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--text-primary);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+        .btn-link:hover {
+            background: var(--bg-card-hover);
             border-color: rgba(255,255,255,0.15);
+            transform: translateY(-1px);
+        }
+
+        /* Stats cards in grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1rem 1.25rem;
+            position: relative;
+            overflow: hidden;
         }
 
         .stat-card::before {
@@ -197,247 +295,131 @@
             width: 4px;
             height: 100%;
         }
-
-        .stat-card.violet::before { background: var(--accent-violet); }
-        .stat-card.cyan::before { background: var(--accent-cyan); }
-        .stat-card.emerald::before { background: var(--accent-emerald); }
-        .stat-card.amber::before { background: var(--accent-amber); }
+        .stat-card.primary::before { background: var(--primary); }
+        .stat-card.secondary::before { background: var(--secondary); }
+        .stat-card.emerald::before { background: var(--emerald); }
+        .stat-card.amber::before { background: var(--amber); }
 
         .stat-label {
+            font-size: 0.75rem;
+            font-weight: 600;
             color: var(--text-secondary);
-            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
 
         .stat-value {
-            font-size: 1.6rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: var(--accent-emerald);
-            box-shadow: 0 0 8px var(--accent-emerald);
-            display: inline-block;
-            animation: pulse 1.8s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.95); opacity: 0.5; }
-            50% { transform: scale(1.15); opacity: 1; }
-            100% { transform: scale(0.95); opacity: 0.5; }
-        }
-
-        /* Core Content Layout */
-        .content-layout {
-            display: grid;
-            grid-template-columns: 2fr 1.3fr;
-            gap: 2rem;
-        }
-
-        @media (max-width: 1024px) {
-            .content-layout {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Feature Sections */
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .features-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .feature-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 1.75rem;
-            backdrop-filter: blur(12px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .feature-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-
-        .feature-title-group h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .feature-title-group p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
             margin-top: 0.25rem;
-        }
-
-        .badge {
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 0.3rem 0.6rem;
-            border-radius: 6px;
-            text-transform: uppercase;
-        }
-
-        .badge-violet { background: rgba(139, 92, 246, 0.15); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.3); }
-        .badge-cyan { background: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.3); }
-        .badge-emerald { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-        .badge-rose { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
-
-        .endpoints-box {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-top: 1rem;
-            font-size: 0.85rem;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .endpoint-row {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.6rem;
-            font-family: 'Fira Code', monospace;
+            gap: 0.4rem;
         }
 
-        .endpoint-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .method {
-            font-weight: bold;
-            padding: 0.15rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            width: 55px;
-            text-align: center;
-        }
-
-        .method.get { background-color: rgba(16, 185, 129, 0.2); color: #34d399; }
-        .method.post { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; }
-        .method.put { background-color: rgba(245, 158, 11, 0.2); color: #fbbf24; }
-        .method.delete { background-color: rgba(244, 63, 94, 0.2); color: #f87171; }
-
-        .path {
-            color: #e5e7eb;
-        }
-
-        .notes-list {
-            list-style: none;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-top: 0.75rem;
-        }
-
-        .notes-list li {
-            margin-bottom: 0.4rem;
-            padding-left: 1.25rem;
-            position: relative;
-        }
-
-        .notes-list li::before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: var(--accent-violet);
-        }
-
-        /* Interactive Console Panel */
-        .console-panel {
-            background: rgba(10, 10, 18, 0.8);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 1.75rem;
-            height: fit-content;
-            position: sticky;
-            top: 2rem;
-            backdrop-filter: blur(16px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .console-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.25rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 0.75rem;
-        }
-
-        .console-title {
-            font-weight: 700;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--accent-cyan);
-        }
-
-        .console-dot {
+        .pulse-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background-color: var(--accent-cyan);
-            box-shadow: 0 0 6px var(--accent-cyan);
+            background-color: var(--emerald);
+            box-shadow: 0 0 6px var(--emerald);
+            animation: pulse-animation 1.5s infinite;
+        }
+        @keyframes pulse-animation {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        /* Workspace Panels (Tabs content) */
+        .workspace-panel {
+            display: none;
+            flex-direction: column;
+            gap: 1.5rem;
+            animation: fadeIn 0.25s ease forwards;
+        }
+
+        .workspace-panel.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(12px);
+        }
+
+        .panel-card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Forms styling */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .form-full {
+            grid-column: span 2;
+        }
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-full {
+                grid-column: span 1;
+            }
         }
 
         .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
             margin-bottom: 1rem;
         }
 
         .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.4rem;
+            font-size: 0.8rem;
             font-weight: 600;
+            color: var(--text-secondary);
             text-transform: uppercase;
+            letter-spacing: 0.02em;
         }
 
         .form-control {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--card-border);
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
             border-radius: 10px;
             padding: 0.65rem 0.85rem;
             color: var(--text-primary);
             font-family: inherit;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            width: 100%;
         }
-
         .form-control:focus {
             outline: none;
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 8px rgba(6, 182, 212, 0.2);
+            border-color: var(--primary);
+            box-shadow: 0 0 6px rgba(139, 92, 246, 0.2);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
         }
 
         select.form-control {
@@ -445,448 +427,1996 @@
             background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 10px center;
-            background-size: 16px;
-            padding-right: 40px;
+            background-size: 14px;
+            padding-right: 35px;
         }
 
-        .response-box {
-            margin-top: 1.5rem;
-        }
-
-        .response-header {
+        .checkbox-label {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        .response-status {
-            font-family: 'Fira Code', monospace;
-            font-weight: bold;
-        }
-
-        .response-status.success { color: var(--accent-emerald); }
-        .response-status.error { color: var(--accent-rose); }
-
-        pre {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 1rem;
-            overflow-x: auto;
-            max-height: 280px;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-            color: #34d399; /* Green coding look */
-        }
-
-        /* Footer styling */
-        footer {
-            margin-top: 5rem;
-            padding: 2rem;
-            border-top: 1px solid var(--card-border);
-            text-align: center;
-            color: var(--text-secondary);
+            gap: 0.5rem;
+            cursor: pointer;
             font-size: 0.9rem;
-            background: rgba(0, 0, 0, 0.1);
+            user-select: none;
+            margin-top: 0.25rem;
         }
 
-        footer a {
-            color: var(--accent-cyan);
-            text-decoration: none;
+        .checkbox-label input {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary);
         }
 
-        footer a:hover {
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--rose) 0%, #e11d48 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.25);
+        }
+        .btn-danger:hover {
+            box-shadow: 0 6px 16px rgba(244, 63, 94, 0.4);
+            transform: translateY(-1px);
+        }
+
+        /* Login presets */
+        .presets-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .preset-badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.35rem 0.65rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .preset-badge:hover {
+            background-color: var(--bg-card-hover);
+            border-color: var(--primary);
+        }
+
+        /* Products Tab Content */
+        .crud-workspace {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+        @media (max-width: 1100px) {
+            .crud-workspace {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Catalog Filters */
+        .filters-row {
+            display: grid;
+            grid-template-columns: 2fr repeat(4, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 800px) {
+            .filters-row {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Products Table */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: rgba(0,0,0,0.15);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+        th, td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        th {
+            background: rgba(255,255,255,0.02);
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover td {
+            background-color: rgba(255,255,255,0.01);
+        }
+
+        .badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+        .badge-success { background: rgba(16, 185, 129, 0.1); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); }
+        .badge-danger { background: rgba(244, 63, 94, 0.1); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.2); }
+        .badge-info { background: rgba(6, 182, 212, 0.1); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.2); }
+        .badge-warn { background: rgba(245, 158, 11, 0.1); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.2); }
+
+        .price-text {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.35rem;
+        }
+        .btn-table {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        .btn-table:hover {
+            background: rgba(255,255,255,0.08);
+            color: var(--text-primary);
+        }
+        .btn-table.delete-action:hover {
+            color: var(--rose);
+            background: rgba(244, 63, 94, 0.1);
+        }
+
+        /* File Upload Zone */
+        .dropzone-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem 1.5rem;
+            background: rgba(0,0,0,0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+        .dropzone-container:hover, .dropzone-container.dragover {
+            border-color: var(--primary);
+            background: rgba(139, 92, 246, 0.05);
+        }
+        .dropzone-icon {
+            width: 48px;
+            height: 48px;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            transition: transform 0.2s ease;
+        }
+        .dropzone-container:hover .dropzone-icon {
+            transform: translateY(-3px);
+            color: var(--primary);
+        }
+        .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .preview-area {
+            margin-top: 1.5rem;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .image-preview {
+            max-width: 200px;
+            max-height: 150px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 0.5rem;
+            object-fit: cover;
+        }
+        .file-info-badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* JWT Inspector & Codecs */
+        .codec-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        @media (max-width: 900px) {
+            .codec-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .jwt-result-box {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.75rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            max-height: 140px;
+        }
+
+        /* Delay Timer Overlay */
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 9, 21, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .timer-circle {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .timer-ring {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 6px solid var(--border-color);
+            border-top: 6px solid var(--primary);
+            animation: spin 1s linear infinite;
+            position: absolute;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .timer-val {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        /* Persistent Live Console (Right side) */
+        .console {
+            width: 450px;
+            background: #090812;
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .console-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .console-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .console-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            box-shadow: 0 0 6px var(--secondary);
+        }
+
+        .console-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-console-action {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 0.25rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .btn-console-action:hover {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .console-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+        }
+
+        .console-placeholder {
+            margin: auto;
+            text-align: center;
+            color: var(--text-muted);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            max-width: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .console-placeholder svg {
+            width: 32px;
+            height: 32px;
+            opacity: 0.4;
+        }
+
+        .log-entry {
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            padding-bottom: 1.5rem;
+            animation: slideIn 0.2s ease forwards;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .log-entry:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .log-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .log-req-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .method-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            color: white;
+        }
+        .method-badge.get { background-color: var(--emerald); }
+        .method-badge.post { background-color: var(--primary); }
+        .method-badge.put { background-color: var(--amber); }
+        .method-badge.delete { background-color: var(--rose); }
+
+        .log-url {
+            color: var(--text-primary);
+            word-break: break-all;
+            font-size: 0.75rem;
+        }
+
+        .log-time {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+        }
+
+        .log-section-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin: 0.5rem 0 0.25rem 0;
+            letter-spacing: 0.05em;
+        }
+
+        .log-headers-toggle {
+            cursor: pointer;
+            color: var(--secondary);
+            font-size: 0.7rem;
             text-decoration: underline;
+            margin-bottom: 0.25rem;
+            display: inline-block;
         }
 
-        /* Responsive */
-        @media (max-width: 640px) {
-            header {
+        .log-headers {
+            display: none;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.5rem;
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: var(--text-secondary);
+        }
+
+        .log-body {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: var(--code-color);
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .log-resp-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0.75rem;
+            padding-top: 0.5rem;
+            border-top: 1px dashed rgba(255,255,255,0.05);
+        }
+
+        .status-pill {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+        }
+        .status-pill.s-2xx { background-color: rgba(16, 185, 129, 0.15); color: #34d399; }
+        .status-pill.s-3xx { background-color: rgba(6, 182, 212, 0.15); color: #22d3ee; }
+        .status-pill.s-4xx { background-color: rgba(244, 63, 94, 0.15); color: #fb7185; }
+        .status-pill.s-5xx { background-color: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+
+        .latency-badge {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            background: rgba(255,255,255,0.05);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        /* Responsive UI layout */
+        @media (max-width: 1000px) {
+            .app-container {
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 1.5rem;
             }
-            .header-buttons {
+            .sidebar {
                 width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 1rem;
             }
-            .btn {
-                flex: 1;
-                justify-content: center;
+            .workspace {
+                max-width: 100%;
+                padding: 1.5rem;
+            }
+            .console {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--border-color);
+                height: 400px;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="ambient-orb-1"></div>
-    <div class="ambient-orb-2"></div>
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
 
-    <div class="container">
+    <div class="app-container">
         
-        <header>
-            <div class="logo-area">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
                 <h1>Mock Sandbox API</h1>
-                <p>Interactive playground for QA & Software Testers practice</p>
+                <p>Interactive QA Sandbox playground</p>
             </div>
-            <div class="header-buttons">
-                <a href="{{ docs_url }}" class="btn btn-primary" target="_blank">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                    Swagger Docs
-                </a>
-                <a href="{{ redoc_url }}" class="btn btn-secondary" target="_blank">ReDoc</a>
-            </div>
-        </header>
-
-        <!-- Stats Overview -->
-        <div class="stats-grid">
-            <div class="stat-card emerald">
-                <span class="stat-label">API Status</span>
-                <span class="stat-value"><span class="status-dot"></span> {{ status }}</span>
-            </div>
-            <div class="stat-card violet">
-                <span class="stat-label">CRUD Products Count</span>
-                <span class="stat-value" id="stats-product-count">{{ product_count }}</span>
-            </div>
-            <div class="stat-card cyan">
-                <span class="stat-label">Authentication Modes</span>
-                <span class="stat-value" style="font-size: 1.2rem;">Bearer JWT & Cookies</span>
-            </div>
-            <div class="stat-card amber">
-                <span class="stat-label">Uptime</span>
-                <span class="stat-value" id="uptime-counter">00:00:00</span>
-            </div>
-        </div>
-
-        <!-- Main section layout -->
-        <div class="content-layout">
             
-            <!-- Features Column -->
-            <div>
-                <h2 class="section-title">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-violet)" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
-                    Endpoints Sandbox
-                </h2>
-                
-                <div class="features-list">
-                    
-                    <!-- Auth Card -->
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <div class="feature-title-group">
-                                <h3>1. Authentication & RBAC</h3>
-                                <p>Practice JWT login, HTTP-only cookies, and role-based permissions.</p>
-                            </div>
-                            <span class="badge badge-violet">Authentication</span>
-                        </div>
-                        
-                        <div class="endpoints-box">
-                            <div class="endpoint-row">
-                                <span class="method post">POST</span>
-                                <span class="path">/api/v1/auth/login</span>
-                            </div>
-                            <div class="endpoint-row">
-                                <span class="method post">POST</span>
-                                <span class="path">/api/v1/auth/logout</span>
-                            </div>
-                            <div class="endpoint-row">
-                                <span class="method get">GET</span>
-                                <span class="path">/api/v1/auth/me</span>
-                            </div>
-                        </div>
-                        
-                        <ul class="notes-list">
-                            <li><strong>admin</strong> / <code>password123</code> (Access: Full Read/Create/Update/Delete)</li>
-                            <li><strong>tester</strong> / <code>testpass</code> (Access: Read/Create/Update)</li>
-                            <li><strong>user</strong> / <code>userpass</code> (Access: Read only)</li>
-                        </ul>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="tab-auth">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    Authentication & Auth
+                </button>
+                <button class="nav-item" data-tab="tab-crud">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                    Products Catalog CRUD
+                </button>
+                <button class="nav-item" data-tab="tab-uploads">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    File Uploads Sandbox
+                </button>
+                <button class="nav-item" data-tab="tab-codec">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    Base64 & JWT Codecs
+                </button>
+                <button class="nav-item" data-tab="tab-simulate">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Edge-Case Simulators
+                </button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-status-card">
+                    <div class="user-avatar" id="sidebar-user-avatar">?</div>
+                    <div class="user-details">
+                        <span class="user-name" id="sidebar-username">Guest User</span>
+                        <span class="user-role-badge" id="sidebar-user-role">Anonymous</span>
                     </div>
-
-                    <!-- CRUD Card -->
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <div class="feature-title-group">
-                                <h3>2. Products CRUD (In-Memory)</h3>
-                                <p>Standard RESTful operations with pagination, query filtering, and role validations.</p>
-                            </div>
-                            <span class="badge badge-emerald">CRUD</span>
-                        </div>
-                        
-                        <div class="endpoints-box">
-                            <div class="endpoint-row">
-                                <span class="method get">GET</span>
-                                <span class="path">/api/v1/products?skip=0&limit=10&category=...</span>
-                            </div>
-                            <div class="endpoint-row">
-                                <span class="method get">GET</span>
-                                <span class="path">/api/v1/products/{id}</span>
-                            </div>
-                            <div class="endpoint-row">
-                                <span class="method post">POST</span>
-                                <span class="path">/api/v1/products</span>
-                            </div>
-                            <div class="endpoint-row">
-                                <span class="method put">PUT</span>
-                                <span class="path">/api/v1/products/{id}</span>
-                            </div>
-                            <div class="endpoint-row">
-                                <span class="method delete">DELETE</span>
-                                <span class="path">/api/v1/products/{id}</span>
-                            </div>
-                            <div class="endpoint-row">
-                                <span class="method post">POST</span>
-                                <span class="path">/api/v1/products/reset</span>
-                            </div>
-                        </div>
-                        
-                        <ul class="notes-list">
-                            <li>Categories: <code>Electronics</code>, <code>Footwear</code>, <code>Kitchenware</code>, <code>Books</code>, <code>Clothing</code></li>
-                            <li>Create & Update require <strong>tester</strong> or <strong>admin</strong>. Delete requires <strong>admin</strong>.</li>
-                            <li>Use <code>/reset</code> to reload the original 4 mock products.</li>
-                        </ul>
-                    </div>
-
-                    <!-- File Upload Card -->
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <div class="feature-title-group">
-                                <h3>3. File Uploads</h3>
-                                <p>Test binary file uploads. Validates mime types, sizes, and extracts metadata.</p>
-                            </div>
-                            <span class="badge badge-cyan">Multipart</span>
-                        </div>
-                        
-                        <div class="endpoints-box">
-                            <div class="endpoint-row">
-                                <span class="method post">POST</span>
-                                <span class="path">/api/v1/upload/image</span>
-                            </div>
-                            <div class="endpoint-row">
-                                <span class="method post">POST</span>
-                                <span class="path">/api/v1/upload/text</span>
-                            </div>
-                        </div>
-                        
-                        <ul class="notes-list">
-                            <li><strong>Image Upload:</strong> Limits to 5MB. Checks formatting and extracts size details.</li>
-                            <li><strong>Text Upload:</strong> Decodes and analyzes line, character, and word count.</li>
-                        </ul>
-                    </div>
-
-                    <!-- Codec Card -->
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <div class="feature-title-group">
-                                <h3>4. Codec & Token Utilities</h3>
-                                <p>Verify encoding/decoding and token payloads.</p>
-                            </div>
-                            <span class="badge badge-rose">Utilities</span>
-                        </div>
-                        
-                        <div class="endpoints-box">
-                            <div class="endpoint-row">
-                                <span class="method post">POST</span>
-                                <span class="path">/api/v1/codec/base64/encode</span>
-                            </div>
-                            <div class="endpoint-row">
-                                <span class="method post">POST</span>
-                                <span class="path">/api/v1/codec/base64/decode</span>
-                            </div>
-                            <div class="endpoint-row">
-                                <span class="method post">POST</span>
-                                <span class="path">/api/v1/codec/jwt/decode</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Simulators Card -->
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <div class="feature-title-group">
-                                <h3>5. Edge-Case Simulators</h3>
-                                <p>Simulate delays (timeouts), error response codes, rate limits, and header reviews.</p>
-                            </div>
-                            <span class="badge badge-rose">Simulators</span>
-                        </div>
-                        
-                        <div class="endpoints-box">
-                            <div class="endpoint-row">
-                                <span class="method get">GET</span>
-                                <span class="path">/api/v1/simulate/delay/{seconds}</span>
-                            </div>
-                            <div class="endpoint-row">
-                                <span class="method get">GET</span>
-                                <span class="path">/api/v1/simulate/status/{code}</span>
-                            </div>
-                            <div class="endpoint-row">
-                                <span class="method get">GET</span>
-                                <span class="path">/api/v1/simulate/headers</span>
-                            </div>
-                            <div class="endpoint-row">
-                                <span class="method get">GET</span>
-                                <span class="path">/api/v1/simulate/rate-limit</span>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
+        </aside>
+
+        <!-- Main Workspace Area -->
+        <main class="workspace">
             
-            <!-- Quick Client Column -->
-            <div>
-                <h2 class="section-title">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
-                    Live Test Console
-                </h2>
-                
-                <div class="console-panel">
-                    <div class="console-header">
-                        <div class="console-title">
-                            <span class="console-dot"></span>
-                            Quick Request Runner
+            <div class="workspace-header">
+                <div class="workspace-title">
+                    <h2 id="current-workspace-title">Authentication & RBAC</h2>
+                </div>
+                <div class="quick-links">
+                    <a href="{{ docs_url }}" class="btn-link" target="_blank">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        Swagger UI
+                    </a>
+                    <a href="{{ redoc_url }}" class="btn-link" target="_blank">ReDoc</a>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="stats-grid">
+                <div class="stat-card emerald">
+                    <div class="stat-label">API Status</div>
+                    <div class="stat-value"><span class="pulse-dot"></span> {{ status }}</div>
+                </div>
+                <div class="stat-card primary">
+                    <div class="stat-label">Products Count</div>
+                    <div class="stat-value" id="stats-product-count">{{ product_count }}</div>
+                </div>
+                <div class="stat-card secondary">
+                    <div class="stat-label">Auth Token Injection</div>
+                    <div class="stat-value" id="stats-auth-mode" style="font-size: 1rem;">Bearer Header</div>
+                </div>
+                <div class="stat-card amber">
+                    <div class="stat-label">Uptime</div>
+                    <div class="stat-value" id="uptime-counter">00:00:00</div>
+                </div>
+            </div>
+
+            <!-- TAB 1: AUTHENTICATION PANEL -->
+            <section class="workspace-panel active" id="tab-auth">
+                <div class="panel-card">
+                    <div class="panel-card-title">
+                        <span>1. Account Login Authorization</span>
+                        <span class="badge badge-info">RBAC Simulation</span>
+                    </div>
+                    
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
+                        Authentication credentials dictate permissions for API endpoints. Click on one of the quick presets below to automatically fill in credentials for testing.
+                    </p>
+                    
+                    <div class="form-group">
+                        <label>Quick Preset Logins</label>
+                        <div class="presets-row">
+                            <span class="preset-badge" onclick="fillAuthPreset('admin', 'password123')">🔑 Admin (Full Access)</span>
+                            <span class="preset-badge" onclick="fillAuthPreset('tester', 'testpass')">🛠️ Tester (Create/Update)</span>
+                            <span class="preset-badge" onclick="fillAuthPreset('user', 'userpass')">👤 Standard User (Read-Only)</span>
                         </div>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="auth-username">Username</label>
+                            <input type="text" id="auth-username" class="form-control" placeholder="Enter username">
+                        </div>
+                        <div class="form-group">
+                            <label for="auth-password">Password</label>
+                            <input type="password" id="auth-password" class="form-control" placeholder="Enter password">
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
+                        <button class="btn btn-primary" id="btn-auth-login">Execute Login Request</button>
+                        <button class="btn btn-secondary" id="btn-auth-me">Get Current Session Profile (/me)</button>
+                        <button class="btn btn-danger" id="btn-auth-logout">Logout / Clear Cookie</button>
+                    </div>
+                </div>
+
+                <div class="panel-card">
+                    <div class="panel-card-title">
+                        <span>Token State & Auth Settings</span>
                     </div>
                     
                     <div class="form-group">
-                        <label for="endpoint-select">Select Endpoint scenario</label>
-                        <select id="endpoint-select" class="form-control">
-                            <option value="get-products">GET /api/v1/products (List products)</option>
-                            <option value="reset-products">POST /api/v1/products/reset (Reset Database)</option>
-                            <option value="codec-encode">POST /api/v1/codec/base64/encode (Encode "Hello Sandbox")</option>
-                            <option value="codec-decode">POST /api/v1/codec/base64/decode (Decode "VGVzdGVy")</option>
-                            <option value="status-418">GET /api/v1/simulate/status/418 (I'm a Teapot)</option>
-                            <option value="status-500">GET /api/v1/simulate/status/500 (Internal Error)</option>
-                            <option value="delay-3">GET /api/v1/simulate/delay/3 (3s Delay)</option>
-                            <option value="rate-limit">GET /api/v1/simulate/rate-limit (Rate Limit test)</option>
-                        </select>
-                    </div>
-                    
-                    <button class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;" id="run-btn">
-                        Execute Request
-                    </button>
-                    
-                    <div class="response-box">
-                        <div class="response-header">
-                            <span>Response Output</span>
-                            <span class="response-status" id="response-status-text">STATUS: -</span>
+                        <label>Current Saved JWT Token</label>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="text" id="auth-token-display" class="form-control" style="font-family: 'Fira Code', monospace; font-size: 0.8rem;" readonly placeholder="Not logged in. No JWT token present in browser session.">
+                            <button class="btn btn-secondary" id="btn-copy-token" style="padding: 0.5rem 1rem;">Copy</button>
                         </div>
-                        <pre id="console-output">// Execution output will print here...</pre>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Client Auth Request Method</label>
+                        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem;">
+                            Specify how the browser client sends authentication status to endpoints. "Bearer Token Header" attaches the token header directly. "HttpOnly Cookie Session" relies on the HTTP response cookie set automatically during login.
+                        </p>
+                        <div style="display: flex; gap: 2rem;">
+                            <label class="checkbox-label">
+                                <input type="radio" name="auth_method" value="bearer" checked> Authorization: Bearer &lt;token&gt; Header
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="auth_method" value="cookie"> HttpOnly Cookie (access_token)
+                            </label>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-        </div>
+            <!-- TAB 2: CRUD PANEL -->
+            <section class="workspace-panel" id="tab-crud">
+                
+                <div class="panel-card">
+                    <div class="panel-card-title">
+                        <span>Database Catalog Workspace</span>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-secondary" id="btn-crud-reset" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">🔄 Reset DB</button>
+                            <button class="btn btn-primary" id="btn-crud-refresh" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">🔄 Refresh Catalog</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Filters Grid -->
+                    <div class="filters-row">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <input type="text" id="filter-q" class="form-control" placeholder="Search title/desc...">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <select id="filter-category" class="form-control">
+                                <option value="">All Categories</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Footwear">Footwear</option>
+                                <option value="Kitchenware">Kitchenware</option>
+                                <option value="Books">Books</option>
+                                <option value="Clothing">Clothing</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <input type="number" id="filter-min-price" class="form-control" placeholder="Min $">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <input type="number" id="filter-max-price" class="form-control" placeholder="Max $">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <select id="filter-stock" class="form-control">
+                                <option value="">All Stock</option>
+                                <option value="true">In Stock</option>
+                                <option value="false">Out of Stock</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Products Table Container -->
+                    <div class="table-container">
+                        <table id="products-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;">ID</th>
+                                    <th>Product Details</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th style="width: 80px; text-align: center;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-table-body">
+                                <!-- Loaded dynamically -->
+                                <tr>
+                                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                                        Loading products database... Click Refresh if not loading automatically.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="crud-workspace">
+                    <!-- Create Form Card -->
+                    <div class="panel-card" id="card-product-create">
+                        <div class="panel-card-title">
+                            <span>Create Product Endpoint</span>
+                            <span class="badge badge-success">POST</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="prod-create-name">Product Name (min 3 chars)</label>
+                            <input type="text" id="prod-create-name" class="form-control" placeholder="e.g. Wireless Mouse">
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="prod-create-price">Price ($)</label>
+                                <input type="number" step="0.01" id="prod-create-price" class="form-control" placeholder="e.g. 29.99">
+                            </div>
+                            <div class="form-group">
+                                <label for="prod-create-category">Category</label>
+                                <select id="prod-create-category" class="form-control">
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Footwear">Footwear</option>
+                                    <option value="Kitchenware">Kitchenware</option>
+                                    <option value="Books">Books</option>
+                                    <option value="Clothing">Clothing</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="prod-create-stock" checked> Product is In Stock
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="prod-create-desc">Description</label>
+                            <textarea id="prod-create-desc" class="form-control" placeholder="Provide product details..."></textarea>
+                        </div>
+                        <button class="btn btn-primary" id="btn-prod-create" style="width: 100%;">Create Product</button>
+                    </div>
+
+                    <!-- Edit Form Card (hidden by default) -->
+                    <div class="panel-card" id="card-product-edit" style="display: none;">
+                        <div class="panel-card-title">
+                            <span>Update Product (ID: <span id="prod-edit-id-label"></span>)</span>
+                            <span class="badge badge-warn">PUT</span>
+                        </div>
+                        
+                        <input type="hidden" id="prod-edit-id">
+                        <div class="form-group">
+                            <label for="prod-edit-name">Product Name</label>
+                            <input type="text" id="prod-edit-name" class="form-control">
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="prod-edit-price">Price ($)</label>
+                                <input type="number" step="0.01" id="prod-edit-price" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="prod-edit-category">Category</label>
+                                <select id="prod-edit-category" class="form-control">
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Footwear">Footwear</option>
+                                    <option value="Kitchenware">Kitchenware</option>
+                                    <option value="Books">Books</option>
+                                    <option value="Clothing">Clothing</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="prod-edit-stock"> Product is In Stock
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="prod-edit-desc">Description</label>
+                            <textarea id="prod-edit-desc" class="form-control"></textarea>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-primary" id="btn-prod-update" style="flex-grow: 1;">Save Changes</button>
+                            <button class="btn btn-secondary" onclick="cancelProductEdit()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- TAB 3: FILE UPLOAD PANEL -->
+            <section class="workspace-panel" id="tab-uploads">
+                <div class="panel-card">
+                    <div class="panel-card-title">
+                        <span>Binary File Multipart Sandbox</span>
+                        <span class="badge badge-info">Multipart Upload</span>
+                    </div>
+                    
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
+                        Practice sending form data to upload endpoints. You can choose to upload an image file (PNG/JPEG under 5MB) or a text file (.txt under 2MB).
+                    </p>
+
+                    <div class="form-group">
+                        <label for="upload-endpoint-select">Select Upload Endpoint Target</label>
+                        <select id="upload-endpoint-select" class="form-control" style="margin-bottom: 1rem;">
+                            <option value="/api/v1/upload/image">POST /api/v1/upload/image (Image Validator)</option>
+                            <option value="/api/v1/upload/text">POST /api/v1/upload/text (Text Analyzer)</option>
+                        </select>
+                    </div>
+
+                    <!-- Drag & Drop Container -->
+                    <div class="dropzone-container" id="dropzone">
+                        <svg class="dropzone-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                        </svg>
+                        <p style="font-weight: 600; margin-bottom: 0.25rem;">Drag & drop your file here, or click to browse</p>
+                        <p style="font-size: 0.75rem; color: var(--text-muted);" id="upload-limits-text">Image limitations: PNG, JPEG under 5MB</p>
+                        <input type="file" id="file-input-field" class="file-input">
+                    </div>
+
+                    <div class="preview-area" id="upload-preview-area" style="display: none;">
+                        <img id="image-preview-src" class="image-preview" src="#" alt="Image Preview" style="display: none;">
+                        <div class="file-info-badge">
+                            <span id="preview-file-name" style="font-weight: 600;">file.png</span>
+                            <span id="preview-file-size" style="color: var(--text-muted);">0 KB</span>
+                            <span class="badge badge-info" id="preview-file-type">image/png</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1.5rem;">
+                        <button class="btn btn-primary" id="btn-submit-upload" style="width: 100%;" disabled>Execute File Upload Request</button>
+                    </div>
+                </div>
+
+                <div class="panel-card" id="upload-result-card" style="display: none;">
+                    <div class="panel-card-title">
+                        <span>Extracted Metadata Result</span>
+                    </div>
+                    <div id="upload-metadata-display" class="form-grid">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: CODEC PANEL -->
+            <section class="workspace-panel" id="tab-codec">
+                <div class="codec-section">
+                    <!-- Base64 Card -->
+                    <div class="panel-card">
+                        <div class="panel-card-title">
+                            <span>Base64 Codec Encoder/Decoder</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="base64-raw-input">Text to Encode</label>
+                            <textarea id="base64-raw-input" class="form-control" placeholder="Type plain text to encode..."></textarea>
+                        </div>
+                        
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+                            <button class="btn btn-primary" id="btn-base64-encode" style="flex-grow: 1;">Encode to Base64</button>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="base64-code-input">Base64 Code to Decode</label>
+                            <textarea id="base64-code-input" class="form-control" placeholder="Paste base64 code to decode..."></textarea>
+                        </div>
+
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-secondary" id="btn-base64-decode" style="flex-grow: 1;">Decode Base64 Code</button>
+                        </div>
+                    </div>
+
+                    <!-- JWT Card -->
+                    <div class="panel-card">
+                        <div class="panel-card-title">
+                            <span>JWT Payload Inspector & Verifier</span>
+                        </div>
+                        
+                        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1rem;">
+                            Paste any JSON Web Token below to inspect its unverified Header and Payload claims. It will verify the signature using the server's private secret key.
+                        </p>
+
+                        <div class="form-group">
+                            <label for="jwt-inspect-input">JWT Token</label>
+                            <textarea id="jwt-inspect-input" class="form-control" style="font-family: 'Fira Code', monospace; font-size: 0.8rem; min-height: 120px;" placeholder="Paste JWT token here..."></textarea>
+                            <button class="btn btn-secondary" id="btn-jwt-fill-active" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; margin-top: 0.5rem; width: fit-content; align-self: flex-end;">⚡ Fill Current Active Token</button>
+                        </div>
+
+                        <button class="btn btn-primary" id="btn-jwt-inspect" style="width: 100%; margin-bottom: 1rem;">Inspect & Verify Token</button>
+
+                        <div id="jwt-verification-box" style="display: none;">
+                            <div class="form-group">
+                                <label>Verification Status</label>
+                                <div id="jwt-verify-status-badge"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Decoded Claims Header</label>
+                                <pre id="jwt-header-output" class="jwt-result-box"></pre>
+                            </div>
+                            <div class="form-group">
+                                <label>Decoded Claims Payload</label>
+                                <pre id="jwt-payload-output" class="jwt-result-box"></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: SIMULATOR PANEL -->
+            <section class="workspace-panel" id="tab-simulate">
+                <div class="panel-card">
+                    <div class="panel-card-title">
+                        <span>Delay & Timeout Simulator</span>
+                        <span class="badge badge-info">GET</span>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                        Simulate slower API backend responses. Useful for testing client-side timeouts and loader overlays.
+                    </p>
+                    
+                    <div class="form-group">
+                        <label for="delay-slider">Delay Duration: <span id="delay-slider-val" style="font-weight: 700; color: var(--primary);">3</span> Seconds</label>
+                        <input type="range" id="delay-slider" min="1" max="10" value="3" class="form-control" style="cursor: pointer; padding: 0;">
+                    </div>
+                    
+                    <button class="btn btn-primary" id="btn-simulate-delay">Execute Delayed Request</button>
+                </div>
+
+                <div class="panel-card">
+                    <div class="panel-card-title">
+                        <span>HTTP Status Code Simulator</span>
+                        <span class="badge badge-info">GET</span>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                        Verify how your client code handles specific server status codes. Click a quick status button or enter a custom integer value.
+                    </p>
+                    
+                    <div class="form-group">
+                        <label>Quick Response Statuses</label>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+                            <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="triggerSimulateStatus(200)">200 OK</button>
+                            <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="triggerSimulateStatus(201)">201 Created</button>
+                            <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="triggerSimulateStatus(204)">204 No Content</button>
+                            <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="triggerSimulateStatus(400)">400 Bad Request</button>
+                            <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="triggerSimulateStatus(401)">401 Unauthorized</button>
+                            <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="triggerSimulateStatus(403)">403 Forbidden</button>
+                            <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="triggerSimulateStatus(404)">404 Not Found</button>
+                            <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="triggerSimulateStatus(418)">418 Teapot</button>
+                            <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="triggerSimulateStatus(422)">422 Unprocessable</button>
+                            <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="triggerSimulateStatus(429)">429 Rate Limited</button>
+                            <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="triggerSimulateStatus(500)">500 Internal Error</button>
+                            <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="triggerSimulateStatus(503)">503 Unavailable</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="custom-status-input">Enter Custom Code (100 - 599)</label>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="number" id="custom-status-input" class="form-control" style="max-width: 150px;" min="100" max="599" placeholder="e.g. 502">
+                            <button class="btn btn-primary" id="btn-simulate-custom-status">Trigger Status Request</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="codec-section">
+                    <!-- Echo Headers -->
+                    <div class="panel-card">
+                        <div class="panel-card-title">
+                            <span>Request Headers Echo</span>
+                            <span class="badge badge-info">GET</span>
+                        </div>
+                        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1rem;">
+                            Retrieve a detailed JSON representation of the HTTP request headers currently being processed by the sandbox server.
+                        </p>
+                        <button class="btn btn-primary" id="btn-simulate-headers" style="width: 100%;">Echo Received Headers</button>
+                    </div>
+
+                    <!-- Rate Limiter -->
+                    <div class="panel-card">
+                        <div class="panel-card-title">
+                            <span>Rate Limiting Simulator</span>
+                            <span class="badge badge-info">GET</span>
+                        </div>
+                        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem;">
+                            Tests the rate limiter logic. The rate limiter restricts request access to a maximum of <strong>5 requests per 30 seconds</strong>.
+                        </p>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <button class="btn btn-primary" id="btn-simulate-rate-limit" style="width: 100%;">Send Rate-Limited Request</button>
+                            
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-secondary); background: rgba(0,0,0,0.15); padding: 0.5rem; border-radius: 8px;">
+                                <span>Recent Calls: <strong id="rate-limit-tracker">-</strong></span>
+                                <span id="rate-limit-message" style="font-weight: 600; color: var(--emerald);">Allowed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Persistent Live Request/Response Console -->
+        <section class="console">
+            <div class="console-header">
+                <div class="console-title">
+                    <span class="console-dot"></span>
+                    Live Sandbox Console
+                </div>
+                <div class="console-actions">
+                    <button class="btn-console-action" id="btn-console-copy" title="Copy Raw Response">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        Copy
+                    </button>
+                    <button class="btn-console-action" id="btn-console-clear" title="Clear Console Log">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        Clear
+                    </button>
+                </div>
+            </div>
+            
+            <div class="console-content" id="console-logs-container">
+                <div class="console-placeholder" id="console-placeholder">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                    <span>Execute any action in the workspace to print HTTP logs.</span>
+                </div>
+            </div>
+        </section>
 
     </div>
 
-    <footer>
-        <p>Mock Sandbox API. Crafted for developers and test automation engineers. View full documentation on <a href="/docs">Swagger UI</a>.</p>
-    </footer>
+    <!-- Delayed Loader Overlay -->
+    <div class="loader-overlay" id="delay-loader">
+        <div class="timer-circle">
+            <div class="timer-ring"></div>
+            <div class="timer-val" id="delay-timer-text">0</div>
+        </div>
+        <p style="font-weight: 600; font-size: 1.1rem; margin-top: 0.5rem;">Awaiting Delayed Response...</p>
+        <p style="font-size: 0.85rem; color: var(--text-secondary);">Simulating latency of <span id="delay-timer-target">0</span> seconds.</p>
+    </div>
 
-    <!-- Interactive script -->
+    <!-- Main Controller Logic script -->
     <script>
-        // Uptime counter
-        const startTime = Date.now();
-        setInterval(() => {
-            const diff = Date.now() - startTime;
-            const hrs = String(Math.floor(diff / 3600000)).padStart(2, '0');
-            const mins = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
-            const secs = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
-            document.getElementById('uptime-counter').textContent = `${hrs}:${mins}:${secs}`;
-        }, 1000);
+        // App State Manager
+        const STATE = {
+            activeUser: null,
+            authToken: localStorage.getItem("auth_token") || "",
+            authMethod: localStorage.getItem("auth_method") || "bearer",
+            products: [],
+            lastRawResponse: null
+        };
 
-        // Run requests in the console
-        const runBtn = document.getElementById('run-btn');
-        const endpointSelect = document.getElementById('endpoint-select');
-        const outputPre = document.getElementById('console-output');
-        const statusSpan = document.getElementById('response-status-text');
+        // DOM elements
+        const elements = {
+            sidebarUsername: document.getElementById("sidebar-username"),
+            sidebarUserRole: document.getElementById("sidebar-user-role"),
+            sidebarUserAvatar: document.getElementById("sidebar-user-avatar"),
+            tokenDisplay: document.getElementById("auth-token-display"),
+            consoleContainer: document.getElementById("console-logs-container"),
+            consolePlaceholder: document.getElementById("console-placeholder"),
+            statsProductCount: document.getElementById("stats-product-count"),
+            statsAuthMode: document.getElementById("stats-auth-mode"),
+            productsTableBody: document.getElementById("products-table-body"),
+            
+            // Tab Buttons & Panels
+            tabButtons: document.querySelectorAll(".nav-item"),
+            panels: document.querySelectorAll(".workspace-panel"),
+            workspaceTitle: document.getElementById("current-workspace-title")
+        };
 
-        runBtn.addEventListener('click', async () => {
-            const scenario = endpointSelect.value;
-            outputPre.textContent = "Sending request...";
-            statusSpan.textContent = "STATUS: LOADING";
-            statusSpan.className = "response-status";
+        // Initialize App
+        window.addEventListener("DOMContentLoaded", () => {
+            initTabs();
+            initAuth();
+            initCrud();
+            initUploads();
+            initCodecs();
+            initSimulators();
             
-            let url = "";
-            let options = {};
+            // Initialize Uptime counter
+            const startTime = Date.now();
+            setInterval(() => {
+                const diff = Date.now() - startTime;
+                const hrs = String(Math.floor(diff / 3600000)).padStart(2, '0');
+                const mins = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+                const secs = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+                document.getElementById('uptime-counter').textContent = `${hrs}:${mins}:${secs}`;
+            }, 1000);
+
+            // Initial Products Load
+            fetchProducts();
+        });
+
+        // -----------------------------------------
+        // TAB CONTROLLER
+        // -----------------------------------------
+        function initTabs() {
+            elements.tabButtons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const targetTabId = btn.getAttribute("data-tab");
+                    
+                    // Toggle active button
+                    elements.tabButtons.forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    
+                    // Toggle active panel
+                    elements.panels.forEach(p => p.classList.remove("active"));
+                    document.getElementById(targetTabId).classList.add("active");
+                    
+                    // Update header title text
+                    elements.workspaceTitle.textContent = btn.textContent.trim();
+                });
+            });
+        }
+
+        // -----------------------------------------
+        // HTTP API CORE CLIENT (Logs to Console)
+        // -----------------------------------------
+        async function apiRequest(url, method, options = {}) {
+            const startTime = performance.now();
+            const finalHeaders = { ...(options.headers || {}) };
             
-            switch (scenario) {
-                case "get-products":
-                    url = "/api/v1/products";
-                    options = { method: "GET" };
-                    break;
-                case "reset-products":
-                    url = "/api/v1/products/reset";
-                    options = { method: "POST" };
-                    break;
-                case "codec-encode":
-                    url = "/api/v1/codec/base64/encode";
-                    options = {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ text: "Hello Sandbox" })
-                    };
-                    break;
-                case "codec-decode":
-                    url = "/api/v1/codec/base64/decode";
-                    options = {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ code: "VGVzdGVy" })
-                    };
-                    break;
-                case "status-418":
-                    url = "/api/v1/simulate/status/418";
-                    options = { method: "GET" };
-                    break;
-                case "status-500":
-                    url = "/api/v1/simulate/status/500";
-                    options = { method: "GET" };
-                    break;
-                case "delay-3":
-                    url = "/api/v1/simulate/delay/3";
-                    options = { method: "GET" };
-                    break;
-                case "rate-limit":
-                    url = "/api/v1/simulate/rate-limit";
-                    options = { method: "GET" };
-                    break;
+            // Check auth requirements
+            if (STATE.authToken && STATE.authMethod === "bearer") {
+                finalHeaders["Authorization"] = `Bearer ${STATE.authToken}`;
             }
+
+            options.headers = finalHeaders;
+            options.method = method;
+            options.credentials = "same-origin"; // Ensures HttpOnly cookies are passed back/forth
+
+            // Log Request to Console
+            logRequestToConsole(method, url, finalHeaders, options.body);
 
             try {
                 const response = await fetch(url, options);
-                const statusCode = response.status;
+                const endTime = performance.now();
+                const latency = Math.round(endTime - startTime);
+
+                const contentType = response.headers.get("content-type") || "";
+                let responseBody;
                 
-                statusSpan.textContent = `STATUS: ${statusCode} ${response.statusText || ""}`;
-                if (response.ok) {
-                    statusSpan.className = "response-status success";
+                if (response.status === 204) {
+                    responseBody = { message: "No Content (204 Status)" };
+                } else if (contentType.includes("application/json")) {
+                    responseBody = await response.json();
                 } else {
-                    statusSpan.className = "response-status error";
+                    responseBody = { text: await response.text() };
                 }
-                
-                let data;
-                if (statusCode === 204) {
-                    data = { message: "No Content returned." };
-                } else {
-                    data = await response.json();
-                }
-                
-                outputPre.textContent = JSON.stringify(data, null, 2);
-                
-                // If it was database reset, update product count on UI
-                if (scenario === "reset-products" && response.ok) {
-                    document.getElementById('stats-product-count').textContent = "4";
-                } else if (scenario === "get-products" && response.ok && Array.isArray(data)) {
-                    document.getElementById('stats-product-count').textContent = data.length;
-                }
+
+                // Cache raw response for copy actions
+                STATE.lastRawResponse = responseBody;
+
+                // Log Response to Console
+                logResponseToConsole(response.status, response.statusText, response.headers, responseBody, latency);
+                return { ok: response.ok, status: response.status, body: responseBody };
             } catch (err) {
-                statusSpan.textContent = "STATUS: ERROR";
-                statusSpan.className = "response-status error";
-                outputPre.textContent = `Fetch error: ${err.message}`;
+                const endTime = performance.now();
+                const latency = Math.round(endTime - startTime);
+                
+                logResponseToConsole(0, "Network Connection Failed", {}, { error: err.message }, latency);
+                return { ok: false, status: 0, body: { error: err.message } };
             }
+        }
+
+        // -----------------------------------------
+        // CONSOLE WRITER
+        // -----------------------------------------
+        function logRequestToConsole(method, url, headers, body) {
+            elements.consolePlaceholder.style.display = "none";
+            
+            const logEntry = document.createElement("div");
+            logEntry.className = "log-entry";
+            logEntry.setAttribute("data-log-time", Date.now());
+            
+            const reqTime = new Date().toLocaleTimeString();
+            
+            let bodyStr = "";
+            if (body) {
+                if (body instanceof FormData) {
+                    bodyStr = "[FormData File Upload]";
+                } else {
+                    bodyStr = typeof body === "string" ? body : JSON.stringify(body, null, 2);
+                }
+            }
+
+            // Generate structured headers text
+            let headersStr = "";
+            for (const [key, value] of Object.entries(headers)) {
+                headersStr += `${key}: ${value}\n`;
+            }
+
+            logEntry.innerHTML = `
+                <div class="log-meta">
+                    <div class="log-req-info">
+                        <span class="method-badge ${method.toLowerCase()}">${method}</span>
+                        <span class="log-url">${url}</span>
+                    </div>
+                    <span class="log-time">${reqTime}</span>
+                </div>
+                
+                ${headersStr ? `
+                    <span class="log-headers-toggle" onclick="toggleConsoleHeaders(this)">Show Headers</span>
+                    <pre class="log-headers">${headersStr}</pre>
+                ` : ''}
+                
+                ${bodyStr ? `
+                    <div class="log-section-title">Request Body</div>
+                    <pre class="log-body" style="color: #60a5fa;">${bodyStr}</pre>
+                ` : ''}
+                
+                <div class="response-section-target">
+                    <div class="log-section-title">Awaiting Response...</div>
+                    <pre class="log-body" style="color: var(--text-muted);">Executing API Network Call...</pre>
+                </div>
+            `;
+            
+            elements.consoleContainer.appendChild(logEntry);
+            elements.consoleContainer.scrollTop = elements.consoleContainer.scrollHeight;
+            
+            // Store reference in list to attach response later
+            logEntry.id = "current-pending-log";
+        }
+
+        function logResponseToConsole(status, statusText, headers, body, latency) {
+            const pendingLog = document.getElementById("current-pending-log");
+            if (!pendingLog) return;
+            
+            pendingLog.removeAttribute("id"); // Remove pending tag
+            
+            const responseSection = pendingLog.querySelector(".response-section-target");
+            if (!responseSection) return;
+
+            let statusClass = "s-5xx";
+            if (status >= 200 && status < 300) statusClass = "s-2xx";
+            else if (status >= 300 && status < 400) statusClass = "s-3xx";
+            else if (status >= 400 && status < 500) statusClass = "s-4xx";
+
+            let bodyStr = JSON.stringify(body, null, 2);
+            let headersStr = "";
+            headers.forEach((value, key) => {
+                headersStr += `${key}: ${value}\n`;
+            });
+
+            responseSection.innerHTML = `
+                <div class="log-resp-info">
+                    <span class="status-pill ${statusClass}">STATUS: ${status} ${statusText || ''}</span>
+                    <span class="latency-badge">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        ${latency} ms
+                    </span>
+                </div>
+                ${headersStr ? `
+                    <span class="log-headers-toggle" onclick="toggleConsoleHeaders(this)">Show Response Headers</span>
+                    <pre class="log-headers">${headersStr}</pre>
+                ` : ''}
+                <div class="log-section-title">Response Content</div>
+                <pre class="log-body">${bodyStr}</pre>
+            `;
+            
+            elements.consoleContainer.scrollTop = elements.consoleContainer.scrollHeight;
+        }
+
+        function toggleConsoleHeaders(toggleLink) {
+            const preElement = toggleLink.nextElementSibling;
+            if (preElement.style.display === "block") {
+                preElement.style.display = "none";
+                toggleLink.textContent = toggleLink.textContent.replace("Hide", "Show");
+            } else {
+                preElement.style.display = "block";
+                toggleLink.textContent = toggleLink.textContent.replace("Show", "Hide");
+            }
+        }
+
+        // Console Header actions
+        document.getElementById("btn-console-clear").addEventListener("click", () => {
+            elements.consoleContainer.innerHTML = "";
+            elements.consolePlaceholder.style.display = "flex";
+            elements.consoleContainer.appendChild(elements.consolePlaceholder);
+            STATE.lastRawResponse = null;
         });
+
+        document.getElementById("btn-console-copy").addEventListener("click", () => {
+            if (!STATE.lastRawResponse) {
+                alert("No recent response content to copy.");
+                return;
+            }
+            navigator.clipboard.writeText(JSON.stringify(STATE.lastRawResponse, null, 2));
+            alert("Latest response content copied to clipboard!");
+        });
+
+        // -----------------------------------------
+        // WORKSPACE: AUTHENTICATION SECTION
+        // -----------------------------------------
+        function initAuth() {
+            // Watch auth method toggle
+            const radioButtons = document.querySelectorAll("input[name='auth_method']");
+            radioButtons.forEach(radio => {
+                radio.addEventListener("change", (e) => {
+                    STATE.authMethod = e.target.value;
+                    localStorage.setItem("auth_method", STATE.authMethod);
+                    elements.statsAuthMode.textContent = STATE.authMethod === "bearer" ? "Bearer Header" : "Cookie Session";
+                });
+            });
+
+            // Set default view on load
+            const savedMethod = localStorage.getItem("auth_method");
+            if (savedMethod) {
+                STATE.authMethod = savedMethod;
+                document.querySelector(`input[name='auth_method'][value='${savedMethod}']`).checked = true;
+                elements.statsAuthMode.textContent = savedMethod === "bearer" ? "Bearer Header" : "Cookie Session";
+            }
+
+            if (STATE.authToken) {
+                elements.tokenDisplay.value = STATE.authToken;
+            }
+
+            // Actions
+            document.getElementById("btn-auth-login").addEventListener("click", executeLogin);
+            document.getElementById("btn-auth-logout").addEventListener("click", executeLogout);
+            document.getElementById("btn-auth-me").addEventListener("click", fetchProfileDetails);
+            document.getElementById("btn-copy-token").addEventListener("click", () => {
+                if (!STATE.authToken) return;
+                navigator.clipboard.writeText(STATE.authToken);
+                alert("JWT token copied to clipboard!");
+            });
+
+            // Check current profile
+            fetchProfileDetails(false);
+        }
+
+        function fillAuthPreset(username, password) {
+            document.getElementById("auth-username").value = username;
+            document.getElementById("auth-password").value = password;
+        }
+
+        async function executeLogin() {
+            const usernameInput = document.getElementById("auth-username").value;
+            const passwordInput = document.getElementById("auth-password").value;
+            
+            if (!usernameInput || !passwordInput) {
+                alert("Fill in username and password fields.");
+                return;
+            }
+
+            const payload = { username: usernameInput, password: passwordInput };
+            const result = await apiRequest("/api/v1/auth/login", "POST", {
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (result.ok) {
+                STATE.authToken = result.body.access_token;
+                localStorage.setItem("auth_token", STATE.authToken);
+                elements.tokenDisplay.value = STATE.authToken;
+                
+                // Update profile display
+                await fetchProfileDetails(false);
+            } else {
+                executeLogout();
+            }
+        }
+
+        async function executeLogout() {
+            const result = await apiRequest("/api/v1/auth/logout", "POST");
+            
+            STATE.authToken = "";
+            STATE.activeUser = null;
+            localStorage.removeItem("auth_token");
+            
+            elements.tokenDisplay.value = "";
+            elements.sidebarUsername.textContent = "Guest User";
+            elements.sidebarUserRole.textContent = "Anonymous";
+            elements.sidebarUserAvatar.textContent = "?";
+            elements.sidebarUserAvatar.style.background = "linear-gradient(135deg, var(--text-muted) 0%, var(--bg-card) 100%)";
+        }
+
+        async function fetchProfileDetails(logInConsole = true) {
+            const options = {};
+            let response;
+            
+            if (logInConsole) {
+                response = await apiRequest("/api/v1/auth/me", "GET");
+            } else {
+                // Background quiet fetch to synchronize local UI
+                try {
+                    const headers = {};
+                    if (STATE.authToken && STATE.authMethod === "bearer") {
+                        headers["Authorization"] = `Bearer ${STATE.authToken}`;
+                    }
+                    const res = await fetch("/api/v1/auth/me", { headers, credentials: "same-origin" });
+                    if (res.ok) {
+                        const data = await res.json();
+                        response = { ok: true, body: data };
+                    } else {
+                        response = { ok: false };
+                    }
+                } catch {
+                    response = { ok: false };
+                }
+            }
+
+            if (response && response.ok) {
+                STATE.activeUser = response.body;
+                
+                elements.sidebarUsername.textContent = STATE.activeUser.username;
+                elements.sidebarUserRole.textContent = STATE.activeUser.role;
+                
+                const initials = STATE.activeUser.username.substring(0, 2).toUpperCase();
+                elements.sidebarUserAvatar.textContent = initials;
+                
+                // Set avatar color based on role
+                if (STATE.activeUser.role === "admin") {
+                    elements.sidebarUserAvatar.style.background = "linear-gradient(135deg, var(--rose) 0%, var(--amber) 100%)";
+                } else if (STATE.activeUser.role === "tester") {
+                    elements.sidebarUserAvatar.style.background = "linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)";
+                } else {
+                    elements.sidebarUserAvatar.style.background = "linear-gradient(135deg, var(--emerald) 0%, #059669 100%)";
+                }
+            } else {
+                if (logInConsole) {
+                    alert("Could not load active profile credentials.");
+                }
+            }
+        }
+
+        // -----------------------------------------
+        // WORKSPACE: CRUD CATALOG SECTION
+        // -----------------------------------------
+        function initCrud() {
+            document.getElementById("btn-crud-refresh").addEventListener("click", fetchProducts);
+            document.getElementById("btn-crud-reset").addEventListener("click", resetDatabase);
+            document.getElementById("btn-prod-create").addEventListener("click", createProduct);
+            document.getElementById("btn-prod-update").addEventListener("click", updateProduct);
+
+            // Add filter listener events
+            ["filter-q", "filter-category", "filter-min-price", "filter-max-price", "filter-stock"].forEach(id => {
+                document.getElementById(id).addEventListener("input", filterProductsList);
+            });
+        }
+
+        async function fetchProducts() {
+            const response = await apiRequest("/api/v1/products", "GET");
+            if (response.ok) {
+                STATE.products = response.body;
+                elements.statsProductCount.textContent = STATE.products.length;
+                renderProductsTable(STATE.products);
+            }
+        }
+
+        function renderProductsTable(products) {
+            elements.productsTableBody.innerHTML = "";
+            
+            if (products.length === 0) {
+                elements.productsTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                            No products match the selected criteria filters.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            products.forEach(p => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td style="font-weight:700;">${p.id}</td>
+                    <td>
+                        <div style="font-weight:600; color:var(--text-primary);">${p.name}</div>
+                        <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:0.15rem;">${p.description || 'No description provided.'}</div>
+                    </td>
+                    <td><span class="badge badge-info">${p.category}</span></td>
+                    <td><span class="price-text">$${p.price.toFixed(2)}</span></td>
+                    <td>
+                        ${p.in_stock 
+                            ? '<span class="badge badge-success">In Stock</span>' 
+                            : '<span class="badge badge-danger">Out of Stock</span>'}
+                    </td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-table" onclick="startProductEdit(${p.id})" title="Edit Product">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            </button>
+                            <button class="btn-table delete-action" onclick="deleteProductRequest(${p.id})" title="Delete Product">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                elements.productsTableBody.appendChild(tr);
+            });
+        }
+
+        function filterProductsList() {
+            const q = document.getElementById("filter-q").value.toLowerCase();
+            const category = document.getElementById("filter-category").value;
+            const minPrice = parseFloat(document.getElementById("filter-min-price").value) || null;
+            const maxPrice = parseFloat(document.getElementById("filter-max-price").value) || null;
+            const stock = document.getElementById("filter-stock").value;
+
+            let filtered = STATE.products;
+
+            if (q) {
+                filtered = filtered.filter(p => 
+                    p.name.toLowerCase().includes(q) || 
+                    (p.description && p.description.toLowerCase().includes(q))
+                );
+            }
+            if (category) {
+                filtered = filtered.filter(p => p.category === category);
+            }
+            if (minPrice !== null) {
+                filtered = filtered.filter(p => p.price >= minPrice);
+            }
+            if (maxPrice !== null) {
+                filtered = filtered.filter(p => p.price <= maxPrice);
+            }
+            if (stock) {
+                const stockBool = stock === "true";
+                filtered = filtered.filter(p => p.in_stock === stockBool);
+            }
+
+            renderProductsTable(filtered);
+        }
+
+        async function resetDatabase() {
+            const response = await apiRequest("/api/v1/products/reset", "POST");
+            if (response.ok) {
+                cancelProductEdit();
+                await fetchProducts();
+            }
+        }
+
+        async function createProduct() {
+            const name = document.getElementById("prod-create-name").value;
+            const price = parseFloat(document.getElementById("prod-create-price").value);
+            const category = document.getElementById("prod-create-category").value;
+            const inStock = document.getElementById("prod-create-stock").checked;
+            const description = document.getElementById("prod-create-desc").value;
+
+            if (!name || isNaN(price)) {
+                alert("Please verify required fields (Product Name, Price).");
+                return;
+            }
+
+            const payload = {
+                name,
+                price,
+                category,
+                in_stock: inStock,
+                description: description || null
+            };
+
+            const response = await apiRequest("/api/v1/products", "POST", {
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                // Reset Form
+                document.getElementById("prod-create-name").value = "";
+                document.getElementById("prod-create-price").value = "";
+                document.getElementById("prod-create-desc").value = "";
+                
+                await fetchProducts();
+            }
+        }
+
+        function startProductEdit(productId) {
+            const product = STATE.products.find(p => p.id === productId);
+            if (!product) return;
+
+            document.getElementById("card-product-create").style.display = "none";
+            
+            const editCard = document.getElementById("card-product-edit");
+            editCard.style.display = "block";
+            
+            document.getElementById("prod-edit-id-label").textContent = product.id;
+            document.getElementById("prod-edit-id").value = product.id;
+            document.getElementById("prod-edit-name").value = product.name;
+            document.getElementById("prod-edit-price").value = product.price;
+            document.getElementById("prod-edit-category").value = product.category;
+            document.getElementById("prod-edit-stock").checked = product.in_stock;
+            document.getElementById("prod-edit-desc").value = product.description || "";
+            
+            editCard.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function cancelProductEdit() {
+            document.getElementById("card-product-edit").style.display = "none";
+            document.getElementById("card-product-create").style.display = "block";
+        }
+
+        async function updateProduct() {
+            const id = document.getElementById("prod-edit-id").value;
+            const name = document.getElementById("prod-edit-name").value;
+            const price = parseFloat(document.getElementById("prod-edit-price").value);
+            const category = document.getElementById("prod-edit-category").value;
+            const inStock = document.getElementById("prod-edit-stock").checked;
+            const description = document.getElementById("prod-edit-desc").value;
+
+            if (!name || isNaN(price)) {
+                alert("Please fill in Name and Price.");
+                return;
+            }
+
+            const payload = {
+                name,
+                price,
+                category,
+                in_stock: inStock,
+                description: description || null
+            };
+
+            const response = await apiRequest(`/api/v1/products/${id}`, "PUT", {
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                cancelProductEdit();
+                await fetchProducts();
+            }
+        }
+
+        async function deleteProductRequest(productId) {
+            if (!confirm(`Are you sure you want to delete product with ID ${productId}?`)) {
+                return;
+            }
+            
+            const response = await apiRequest(`/api/v1/products/${productId}`, "DELETE");
+            if (response.ok) {
+                cancelProductEdit();
+                await fetchProducts();
+            }
+        }
+
+        // -----------------------------------------
+        // WORKSPACE: UPLOADS SECTION
+        // -----------------------------------------
+        function initUploads() {
+            const dropzone = document.getElementById("dropzone");
+            const fileInput = document.getElementById("file-input-field");
+            const endpointSelect = document.getElementById("upload-endpoint-select");
+            const submitBtn = document.getElementById("btn-submit-upload");
+            const limitsText = document.getElementById("upload-limits-text");
+            
+            let selectedFile = null;
+
+            endpointSelect.addEventListener("change", () => {
+                selectedFile = null;
+                submitBtn.disabled = true;
+                document.getElementById("upload-preview-area").style.display = "none";
+                document.getElementById("upload-result-card").style.display = "none";
+                
+                if (endpointSelect.value.includes("image")) {
+                    limitsText.textContent = "Image limitations: PNG, JPEG under 5MB";
+                } else {
+                    limitsText.textContent = "Text limitations: .txt files under 2MB";
+                }
+            });
+
+            // Handle Drag/Drop states
+            ["dragenter", "dragover"].forEach(eventName => {
+                dropzone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    dropzone.classList.add("dragover");
+                }, false);
+            });
+
+            ["dragleave", "drop"].forEach(eventName => {
+                dropzone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    dropzone.classList.remove("dragover");
+                }, false);
+            });
+
+            dropzone.addEventListener("drop", (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files.length) {
+                    handleFileSelection(files[0]);
+                }
+            });
+
+            fileInput.addEventListener("change", (e) => {
+                if (fileInput.files.length) {
+                    handleFileSelection(fileInput.files[0]);
+                }
+            });
+
+            function handleFileSelection(file) {
+                selectedFile = file;
+                submitBtn.disabled = false;
+                
+                const previewArea = document.getElementById("upload-preview-area");
+                const previewImg = document.getElementById("image-preview-src");
+                const nameLabel = document.getElementById("preview-file-name");
+                const sizeLabel = document.getElementById("preview-file-size");
+                const typeLabel = document.getElementById("preview-file-type");
+
+                nameLabel.textContent = file.name;
+                sizeLabel.textContent = `${(file.size / 1024).toFixed(1)} KB`;
+                typeLabel.textContent = file.type || "unknown type";
+                
+                previewArea.style.display = "flex";
+
+                // If image, render local file reader preview
+                if (file.type.startsWith("image/")) {
+                    previewImg.style.display = "block";
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        previewImg.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    previewImg.style.display = "none";
+                }
+            }
+
+            submitBtn.addEventListener("click", async () => {
+                if (!selectedFile) return;
+
+                const url = endpointSelect.value;
+                const formData = new FormData();
+                formData.append("file", selectedFile);
+
+                const response = await apiRequest(url, "POST", {
+                    body: formData
+                });
+
+                if (response.ok) {
+                    renderUploadMetadata(response.body);
+                }
+            });
+        }
+
+        function renderUploadMetadata(data) {
+            const card = document.getElementById("upload-result-card");
+            const display = document.getElementById("upload-metadata-display");
+            
+            card.style.display = "block";
+            display.innerHTML = "";
+
+            for (const [key, value] of Object.entries(data)) {
+                if (key === "message" || key === "filename") continue;
+                
+                let renderedValue = value;
+                if (typeof value === "object") {
+                    renderedValue = JSON.stringify(value);
+                }
+
+                const div = document.createElement("div");
+                div.className = "form-group";
+                div.innerHTML = `
+                    <label>${key.replace(/_/g, " ")}</label>
+                    <input type="text" class="form-control" style="background: rgba(0,0,0,0.1);" readonly value="${renderedValue}">
+                `;
+                display.appendChild(div);
+            }
+            card.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // -----------------------------------------
+        // WORKSPACE: CODECS & JWT SECTION
+        // -----------------------------------------
+        function initCodecs() {
+            // Base64 Encode
+            document.getElementById("btn-base64-encode").addEventListener("click", async () => {
+                const text = document.getElementById("base64-raw-input").value;
+                if (!text) return;
+                
+                const response = await apiRequest("/api/v1/codec/base64/encode", "POST", {
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ text })
+                });
+
+                if (response.ok) {
+                    document.getElementById("base64-code-input").value = response.body.encoded;
+                }
+            });
+
+            // Base64 Decode
+            document.getElementById("btn-base64-decode").addEventListener("click", async () => {
+                const code = document.getElementById("base64-code-input").value;
+                if (!code) return;
+                
+                const response = await apiRequest("/api/v1/codec/base64/decode", "POST", {
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ code })
+                });
+
+                if (response.ok) {
+                    document.getElementById("base64-raw-input").value = response.body.decoded;
+                }
+            });
+
+            // JWT Inspect
+            document.getElementById("btn-jwt-fill-active").addEventListener("click", () => {
+                if (STATE.authToken) {
+                    document.getElementById("jwt-inspect-input").value = STATE.authToken;
+                } else {
+                    alert("No JWT token is currently stored in the active session. Log in first.");
+                }
+            });
+
+            document.getElementById("btn-jwt-inspect").addEventListener("click", async () => {
+                const token = document.getElementById("jwt-inspect-input").value;
+                if (!token) {
+                    alert("Please paste a JWT token to verify.");
+                    return;
+                }
+
+                const response = await apiRequest("/api/v1/codec/jwt/decode", "POST", {
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ token })
+                });
+
+                const verifyBox = document.getElementById("jwt-verification-box");
+                const verifyStatus = document.getElementById("jwt-verify-status-badge");
+                const headerPre = document.getElementById("jwt-header-output");
+                const payloadPre = document.getElementById("jwt-payload-output");
+
+                verifyBox.style.display = "block";
+
+                if (response.ok) {
+                    headerPre.textContent = JSON.stringify(response.body.header, null, 2);
+                    payloadPre.textContent = JSON.stringify(response.body.payload, null, 2);
+                    
+                    if (response.body.signature_verified_with_app_key) {
+                        verifyStatus.className = "badge badge-success";
+                        verifyStatus.textContent = "Signature Verified via App Secret Key";
+                    } else {
+                        verifyStatus.className = "badge badge-danger";
+                        verifyStatus.textContent = response.body.error_message || "Signature Verification Mismatch";
+                    }
+                } else {
+                    headerPre.textContent = "// Error parsing JWT structure";
+                    payloadPre.textContent = "// Error parsing JWT structure";
+                    verifyStatus.className = "badge badge-danger";
+                    verifyStatus.textContent = "JWT Decode Error Status";
+                }
+            });
+        }
+
+        // -----------------------------------------
+        // WORKSPACE: SIMULATOR SECTION
+        // -----------------------------------------
+        function initSimulators() {
+            // Slider value label sync
+            const slider = document.getElementById("delay-slider");
+            const sliderVal = document.getElementById("delay-slider-val");
+            slider.addEventListener("input", (e) => {
+                sliderVal.textContent = e.target.value;
+            });
+
+            // Delay simulator execute
+            document.getElementById("btn-simulate-delay").addEventListener("click", async () => {
+                const sec = parseInt(slider.value);
+                
+                // Show delay overlay loader
+                const overlay = document.getElementById("delay-loader");
+                const timerText = document.getElementById("delay-timer-text");
+                document.getElementById("delay-timer-target").textContent = sec;
+                overlay.style.display = "flex";
+                
+                let remaining = sec;
+                timerText.textContent = remaining;
+                
+                const interval = setInterval(() => {
+                    remaining -= 1;
+                    timerText.textContent = remaining;
+                    if (remaining <= 0) clearInterval(interval);
+                }, 1000);
+
+                await apiRequest(`/api/v1/simulate/delay/${sec}`, "GET");
+                
+                clearInterval(interval);
+                overlay.style.display = "none";
+            });
+
+            // Custom status trigger
+            document.getElementById("btn-simulate-custom-status").addEventListener("click", () => {
+                const code = parseInt(document.getElementById("custom-status-input").value);
+                if (isNaN(code) || code < 100 || code > 599) {
+                    alert("Enter a status code integer between 100 and 599.");
+                    return;
+                }
+                triggerSimulateStatus(code);
+            });
+
+            // Echo headers trigger
+            document.getElementById("btn-simulate-headers").addEventListener("click", () => {
+                apiRequest("/api/v1/simulate/headers", "GET", {
+                    headers: { "X-Tester-Custom-Header": "SandboxAppVerifier", "X-Sandbox-Session": "Active" }
+                });
+            });
+
+            // Rate Limit simulator execute
+            document.getElementById("btn-simulate-rate-limit").addEventListener("click", async () => {
+                const tracker = document.getElementById("rate-limit-tracker");
+                const message = document.getElementById("rate-limit-message");
+                
+                const response = await apiRequest("/api/v1/simulate/rate-limit", "GET");
+                
+                if (response.ok) {
+                    tracker.textContent = `${response.body.requests_in_window}/${response.body.max_requests}`;
+                    message.textContent = "Allowed";
+                    message.className = "badge badge-success";
+                } else if (response.status === 429) {
+                    tracker.textContent = "EXCEEDED";
+                    message.textContent = `Retry after ${response.body.retry_after_seconds}s`;
+                    message.className = "badge-rose badge";
+                } else {
+                    tracker.textContent = "ERROR";
+                    message.textContent = "Failed";
+                    message.className = "badge badge-danger";
+                }
+            });
+        }
+
+        async function triggerSimulateStatus(code) {
+            await apiRequest(`/api/v1/simulate/status/${code}`, "GET");
+        }
     </script>
 </body>
 </html>
