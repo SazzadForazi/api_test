@@ -30,10 +30,18 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ---
 
 ## 🌐 Server Pages
-Once the server is running, access these URLs in your browser:
-* **Interactive Web Dashboard**: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-* **Swagger UI Documentation**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-* **ReDoc Documentation**: [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+
+### Live Production Deployment
+* **Live Sandbox Dashboard**: [https://api-test-git-main-team-forazi.vercel.app/](https://api-test-git-main-team-forazi.vercel.app/)
+* **Live Swagger UI Documentation**: [https://api-test-git-main-team-forazi.vercel.app/docs](https://api-test-git-main-team-forazi.vercel.app/docs)
+* **Live ReDoc Documentation**: [https://api-test-git-main-team-forazi.vercel.app/redoc](https://api-test-git-main-team-forazi.vercel.app/redoc)
+
+### Local Development
+Once the server is running locally, access these URLs:
+* **Local Web Dashboard**: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+* **Local Swagger UI**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+* **Local ReDoc**: [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+
 
 ---
 
